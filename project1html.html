@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>موقع تطهير الأسهم السعودية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ===== التنسيقات الأساسية ===== */
+    :root {
+      --primary-color: #00796b;
+      --primary-dark: #004d40;
+      --primary-light: #b2dfdb;
+      --accent-color: #ffc107;
+      --text-color: #333;
+      --text-light: #666;
+      --white: #ffffff;
+      --shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background-color: #f8f9fa;
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+    
+    /* ===== الهيدر ===== */
+    header {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+    
+    .logo-container {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      cursor: pointer; /* إضافة مؤشر النقر */
+    }
+    
+    .logo-container img {
+      height: 40px;
+    }
+    
+    .header-title {
+      font-size: 2.2rem;
+      margin: 0;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      display: inline-block;
+    }
+    
+    /* ===== القائمة الرئيسية ===== */
+    .main-nav {
+      background-color: var(--primary-dark);
+      padding: 0.5rem 1rem;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .main-nav a {
+      color: white;
+      text-decoration: none;
+      padding: 0.8rem 1.5rem;
+      margin: 0 0.5rem;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+    
+    .main-nav a:hover, .main-nav a.active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    /* ===== المحتوى الرئيسي ===== */
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+    
+    /* ===== الصفحة الرئيسية ===== */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .feature-card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .feature-icon {
+      font-size: 3rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+    
+    .feature-card h3 {
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+    
+    /* ===== صفحة حاسبة التطهير ===== */
+    .calculator-container {
+      background-color: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .page-title {
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 2rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.1);
+    }
+    
+    .autocomplete-container {
+      position: relative;
+    }
+    
+    .suggestions {
+      position: absolute;
+      width: 100%;
+      max-height: 200px;
+      overflow-y: auto;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-top: none;
+      border-radius: 0 0 5px 5px;
+      z-index: 10;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .suggestions li {
+      padding: 0.8rem;
+      cursor: pointer;
+      list-style: none;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .suggestions li:last-child {
+      border-bottom: none;
+    }
+    
+    .suggestions li:hover {
+      background-color: #f1f1f1;
+    }
+    
+    .btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: background-color 0.3s;
+      display: inline-block;
+    }
+    
+    .btn:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .btn-secondary {
+      background-color: #6c757d;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #5a6268;
+    }
+    
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    
+    /* ===== صفحة النتائج ===== */
+    .result-container {
+      background-color: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .purification-amount {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      text-align: center;
+      font-size: 1.3rem;
+      box-shadow: var(--shadow);
+    }
+    
+    .purification-amount strong {
+      font-size: 1.8rem;
+      display: block;
+      margin-top: 0.5rem;
+    }
+    
+    .result-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .detail-card {
+      background-color: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .detail-card p {
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin-top: 0.5rem;
+    }
+    
+    .result-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    
+    /* ===== صفحة نسب التطهير ===== */
+    .search-container {
+      margin-bottom: 2rem;
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.1);
+    }
+    
+    .stocks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .stock-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+    }
+    
+    .stock-card:hover {
+      transform: translateY(-3px);
+    }
+    
+    .stock-name {
+      color: var(--primary-color);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+    }
+    
+    .stock-rate {
+      font-size: 1.1rem;
+    }
+    
+    .no-results {
+      text-align: center;
+      padding: 2rem;
+      background-color: #f8d7da;
+      color: #842029;
+      border-radius: 5px;
+      margin-top: 1rem;
+    }
+    
+    /* ===== صفحة من نحن ===== */
+    .about-container {
+      background-color: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .about-section {
+      margin-bottom: 2rem;
+    }
+    
+    .about-section h3 {
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+    
+    /* ===== صفحة الأسئلة الشائعة ===== */
+    .faq-container {
+      background-color: white;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .faq-item {
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 1.5rem;
+    }
+    
+    .faq-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .faq-question {
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.8rem;
+      font-size: 1.2rem;
+    }
+    
+    /* ===== الفوتر ===== */
+    footer {
+      background-color: var(--primary-dark);
+      color: white;
+      padding: 2rem 0;
+      text-align: center;
+      margin-top: 3rem;
+    }
+    
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      padding: 0 1.5rem;
+    }
+    
+    .footer-section h3 {
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+    }
+    
+    .footer-section ul {
+      list-style: none;
+    }
+    
+    .footer-section ul li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .footer-section a {
+      color: white;
+      text-decoration: none;
+      transition: opacity 0.3s;
+    }
+    
+    .footer-section a:hover {
+      opacity: 0.8;
+    }
+    
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transition: background-color 0.3s;
+    }
+    
+    .social-links a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .copyright {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* ===== التصميم المتجاوب ===== */
+    @media (max-width: 768px) {
+      .header-title {
+        font-size: 1.8rem;
+      }
+      
+      .main-nav {
+        overflow-x: auto;
+        white-space: nowrap;
+        justify-content: flex-start;
+        padding-bottom: 0.8rem;
+      }
+      
+      .result-details {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* ===== تأثير الكتابة للعنوان ===== */
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    .typing-effect {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      animation: typing 3s steps(40, end);
+      width: 0;
+      animation-fill-mode: forwards;
+    }
+    
+    /* ===== التأثيرات والحركة ===== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    /* ===== الصفحات المخفية ===== */
+    .page {
+      display: none;
+    }
+    
+    .page.active {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo-container" onclick="navigateTo('home')">
+      <img src="logo.png" alt="شعار موقع تطهير الأسهم" id="logo">
+    </div>
+    <h1 class="header-title"><span id="typing-title" class="typing-effect">موقع تطهير الأسهم السعودية</span></h1>
+  </header>
+  
+  <nav class="main-nav">
+    <a href="javascript:void(0);" class="nav-link active" data-page="home" onclick="navigateTo('home')">الرئيسية</a>
+    <a href="javascript:void(0);" class="nav-link" data-page="calculator" onclick="navigateTo('calculator')">حاسبة التطهير</a>
+    <a href="javascript:void(0);" class="nav-link" data-page="rates" onclick="navigateTo('rates')">نسب التطهير</a>
+    <a href="javascript:void(0);" class="nav-link" data-page="about" onclick="navigateTo('about')">من نحن</a>
+    <a href="javascript:void(0);" class="nav-link" data-page="faq" onclick="navigateTo('faq')">الأسئلة الشائعة</a>
+  </nav>
+  
+  <!-- الصفحة الرئيسية -->
+  <section id="home" class="page active">
+    <div class="container">
+      <h2 class="page-title">مرحباً بك في موقع تطهير الأسهم السعودية</h2>
+      <p style="text-align: center; margin-bottom: 2rem;">الموقع الأول لتطهير الأسهم السعودية حسب الضوابط الشرعية</p>
+      
+      <div class="features-grid">
+        <div class="feature-card" onclick="navigateTo('calculator')">
+          <div class="feature-icon">
+            <i class="fas fa-calculator"></i>
+          </div>
+          <h3>حاسبة التطهير</h3>
+          <p>احسب مبلغ التطهير الواجب عليك بدقة وبساطة</p>
+        </div>
+        
+        <div class="feature-card" onclick="navigateTo('rates')">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3>نسب تطهير الشركات</h3>
+          <p>تعرف على نسب التطهير لجميع الشركات المدرجة في السوق السعودي</p>
+        </div>
+        
+        <div class="feature-card" onclick="navigateTo('faq')">
+          <div class="feature-icon">
+            <i class="fas fa-question-circle"></i>
+          </div>
+          <h3>الأسئلة الشائعة</h3>
+          <p>إجابات على الأسئلة الشائعة حول تطهير الأسهم وأحكامها الشرعية</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- صفحة حاسبة التطهير -->
+  <section id="calculator" class="page">
+    <div class="container">
+      <h2 class="page-title">حاسبة تطهير الأسهم</h2>
+      
+      <div class="calculator-container fade-in">
+        <div class="form-group">
+          <label for="stockName">اسم السهم</label>
+          <div class="autocomplete-container">
+            <input type="text" id="stockName" placeholder="اكتب اسم السهم...">
+            <ul id="suggestions" class="suggestions"></ul>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="buyPrice">مبلغ الشراء (ريال سعودي)</label>
+          <input type="number" id="buyPrice" min="0" step="0.01" placeholder="أدخل مبلغ الشراء">
+        </div>
+        
+        <div class="form-group">
+          <label for="sellPrice">مبلغ البيع (ريال سعودي)</label>
+          <input type="number" id="sellPrice" min="0" step="0.01" placeholder="أدخل مبلغ البيع">
+        </div>
+        
+        <div class="btn-group">
+          <button id="calculateBtn" class="btn" onclick="calculatePurification()">احسب مبلغ التطهير</button>
+          <button class="btn btn-secondary" onclick="resetCalculator()">إعادة تعيين</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- صفحة نتائج التطهير -->
+  <section id="result" class="page">
+    <div class="container">
+      <h2 class="page-title">نتيجة حساب التطهير</h2>
+      
+      <div class="result-container fade-in">
+        <div class="purification-amount">
+          <span>مبلغ التطهير</span>
+          <strong id="purificationAmount">0.00 ريال سعودي</strong>
+        </div>
+        
+        <div class="result-details">
+          <div class="detail-card">
+            <span>مبلغ الربح بعد التطهير</span>
+            <p id="profitAmount">0.00 ريال سعودي</p>
+          </div>
+          
+          <div class="detail-card">
+            <span>نسبة الربح بعد التطهير</span>
+            <p id="profitPercentage">0.00%</p>
+          </div>
+        </div>
+        
+        <div class="result-actions">
+          <button class="btn" onclick="saveAsPDF()"><i class="fas fa-file-pdf"></i> حفظ كملف PDF</button>
+          <button class="btn btn-secondary" onclick="navigateTo('calculator')">حساب آخر</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- صفحة نسب التطهير -->
+  <section id="rates" class="page">
+    <div class="container">
+      <h2 class="page-title">نسب تطهير الشركات</h2>
+      
+      <div class="search-container">
+        <input type="text" id="searchStock" class="search-input" placeholder="ابحث عن اسم الشركة...">
+      </div>
+      
+      <div id="stocksGrid" class="stocks-grid fade-in">
+        <!-- سيتم ملؤها بواسطة JavaScript -->
+      </div>
+      
+      <div id="noResults" class="no-results" style="display: none;">
+        لا توجد نتائج مطابقة للبحث
+      </div>
+    </div>
+  </section>
+  
+  <!-- صفحة من نحن -->
+  <section id="about" class="page">
+    <div class="container">
+      <h2 class="page-title">من نحن</h2>
+      
+      <div class="about-container fade-in">
+        <div class="about-section">
+          <h3>عن الموقع</h3>
+          <p>موقع تطهير الأسهم السعودية هو منصة إلكترونية مجانية تهدف إلى مساعدة المستثمرين في سوق الأسهم السعودي على حساب مبالغ التطهير الواجبة عليهم وفق الضوابط الشرعية.</p>
+        </div>
+        
+        <div class="about-section">
+          <h3>رؤيتنا</h3>
+          <p>نسعى لأن نكون المرجع الأول للمستثمرين في مجال تطهير الأسهم وتقديم خدمات دقيقة وموثوقة تساعدهم على الالتزام بالضوابط الشرعية في استثماراتهم.</p>
+        </div>
+        
+        <div class="about-section">
+          <h3>منهجية الحساب</h3>
+          <p>نعتمد في حساب نسب التطهير على البيانات المالية الرسمية للشركات المدرجة في السوق السعودي وفق المعايير الشرعية المعتمدة من هيئات الرقابة الشرعية المختصة.</p>
+        </div>
+        
+        <div class="about-section">
+          <h3>فريق العمل</h3>
+          <p>يضم فريق عملنا نخبة من المختصين في مجالات الاقتصاد الإسلامي والأسواق المالية والتطوير التقني، نسعى جميعاً لتقديم خدمة متميزة للمستثمرين.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- صفحة الأسئلة الشائعة -->
+  <section id="faq" class="page">
+    <div class="container">
+      <h2 class="page-title">الأسئلة الشائعة</h2>
+      
+      <div class="faq-container fade-in">
+        <div class="faq-item">
+          <div class="faq-question">ما هو تطهير الأسهم؟</div>
+          <div class="faq-answer">
+            <p>تطهير الأسهم هو تخليص المال من الكسب غير المشروع الذي قد يدخل في أرباح الأسهم نتيجة تعامل الشركة ببعض المعاملات المحرمة مثل القروض الربوية أو الاستثمار في أنشطة غير مباحة شرعاً.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">كيف يتم حساب مبلغ التطهير؟</div>
+          <div class="faq-answer">
+            <p>يتم حساب مبلغ التطهير عن طريق ضرب نسبة التطهير المحددة للشركة في مبلغ الربح المتحقق من بيع الأسهم. وتختلف هذه النسبة من شركة لأخرى حسب بياناتها المالية ونسبة الأنشطة المحرمة فيها.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">ما الفرق بين التطهير والزكاة؟</div>
+          <div class="faq-answer">
+            <p>التطهير يختلف عن الزكاة، فالتطهير هو إخراج الكسب غير المشروع من المال ولا يُعد عبادة ولا يُنوى به التقرب إلى الله، أما الزكاة فهي فريضة إسلامية وركن من أركان الإسلام تجب في المال الذي بلغ النصاب وحال عليه الحول.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">أين يتم صرف مبلغ التطهير؟</div>
+          <div class="faq-answer">
+            <p>يتم صرف مبلغ التطهير في وجوه البر والإحسان والمصالح العامة كمساعدة الفقراء والمساكين وبناء المساجد والمدارس والمستشفيات، ولا يجوز الانتفاع به شخصياً أو إخراجه في الواجبات كالزكاة والكفارات.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">هل يجب التطهير في حالة الخسارة؟</div>
+          <div class="faq-answer">
+            <p>لا يجب التطهير في حالة الخسارة، لأن التطهير يكون من الأرباح المتحققة فقط. فإذا لم يكن هناك ربح فلا تطهير.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- الفوتر -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>روابط سريعة</h3>
+        <ul>
+          <li><a href="javascript:void(0);" onclick="navigateTo('home')">الرئيسية</a></li>
+          <li><a href="javascript:void(0);" onclick="navigateTo('calculator')">حاسبة التطهير</a></li>
+          <li><a href="javascript:void(0);" onclick="navigateTo('rates')">نسب التطهير</a></li>
+          <li><a href="javascript:void(0);" onclick="navigateTo('about')">من نحن</a></li>
+          <li><a href="javascript:void(0);" onclick="navigateTo('faq')">الأسئلة الشائعة</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h3>تواصل معنا</h3>
+        <div class="social-links">
+          <a href="https://x.com/StockAmbassador" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+          <a href="https://instagram.com/StockAmbassador" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h3>سياسة الموقع</h3>
+        <ul>
+          <li><a href="javascript:void(0);">سياسة الخصوصية</a></li>
+          <li><a href="javascript:void(0);">شروط الاستخدام</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="copyright">
+      <p>جميع الحقوق محفوظة &copy; <span id="currentYear"></span> - موقع تطهير الأسهم السعودية</p>
+    </div>
+  </footer>
+  
+  <!-- JavaScript -->
+  <!-- JavaScript -->
+<script>
+  // تعريف متغير عام لبيانات الأسهم
+  let stocksData = [];
+
+  // تحديث السنة في حقوق النشر
+  document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+  // تحميل بيانات الأسهم من ملف JSON
+  fetch('project1json.json')
+    .then(response => response.json())
+    .then(data => {
+      // تحويل البيانات إلى مصفوفة
+      stocksData = Object.keys(data).map(name => ({
+        name: name,
+        code: data[name].code,
+        purificationRate: data[name].purification
+      }));
+
+      // تحميل البيانات في حالة كانت صفحة النسب مفعلة
+      if (document.getElementById('rates').classList.contains('active')) {
+        loadStocksData();
+      }
+    })
+    .catch(error => console.error('Error loading stocks data:', error));
+
+  // التنقل بين الصفحات
+  function navigateTo(pageId) {
+    document.querySelectorAll('.page').forEach(page => {
+      page.classList.remove('active');
+    });
+    document.getElementById(pageId).classList.add('active');
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.classList.remove('active');
+    });
+    document.querySelector(`.nav-link[data-page="${pageId}"]`)?.classList.add('active');
+
+    if (pageId === 'rates') {
+      loadStocksData();
+    }
+
+    window.scrollTo(0, 0);
+  }
+
+  // تحميل بيانات الأسهم وعرضها
+  function loadStocksData() {
+    const stocksGrid = document.getElementById('stocksGrid');
+    stocksGrid.innerHTML = '';
+
+    stocksData.forEach(stock => {
+      const stockCard = document.createElement('div');
+      stockCard.className = 'stock-card';
+      stockCard.innerHTML = `
+        <div class="stock-name">${stock.name} (${stock.code})</div>
+        <div class="stock-rate">نسبة التطهير: ${(stock.purificationRate * 100).toFixed(2)}%</div>
+      `;
+      stocksGrid.appendChild(stockCard);
+    });
+  }
+
+  // البحث في الأسهم
+  document.getElementById('searchStock')?.addEventListener('input', function() {
+    const searchTerm = this.value.trim().toLowerCase();
+    const stocksGrid = document.getElementById('stocksGrid');
+    const noResults = document.getElementById('noResults');
+    let matchFound = false;
+
+    stocksGrid.innerHTML = '';
+
+    if (searchTerm === '') {
+      loadStocksData();
+      noResults.style.display = 'none';
+      return;
+    }
+
+    stocksData.forEach(stock => {
+      if (stock.name.toLowerCase().includes(searchTerm) || stock.code.includes(searchTerm)) {
+        const stockCard = document.createElement('div');
+        stockCard.className = 'stock-card';
+        stockCard.innerHTML = `
+          <div class="stock-name">${stock.name} (${stock.code})</div>
+          <div class="stock-rate">نسبة التطهير: ${(stock.purificationRate * 100).toFixed(2)}%</div>
+        `;
+        stocksGrid.appendChild(stockCard);
+        matchFound = true;
+      }
+    });
+
+    noResults.style.display = matchFound ? 'none' : 'block';
+  });
+
+  // اقتراحات الأسهم
+  document.getElementById('stockName')?.addEventListener('input', function() {
+    const searchTerm = this.value.trim().toLowerCase();
+    const suggestionsList = document.getElementById('suggestions');
+
+    if (searchTerm === '') {
+      suggestionsList.innerHTML = '';
+      return;
+    }
+
+    suggestionsList.innerHTML = '';
+
+    const matches = stocksData.filter(stock =>
+      stock.name.toLowerCase().includes(searchTerm) || stock.code.includes(searchTerm)
+    );
+
+    matches.forEach(stock => {
+      const item = document.createElement('li');
+      item.textContent = `${stock.name} (${stock.code})`;
+      item.addEventListener('click', function() {
+        document.getElementById('stockName').value = `${stock.name} (${stock.code})`;
+        suggestionsList.innerHTML = '';
+      });
+      suggestionsList.appendChild(item);
+    });
+  });
+
+  // حساب التطهير
+  function calculatePurification() {
+    const stockNameInput = document.getElementById('stockName').value;
+    const buyPrice = parseFloat(document.getElementById('buyPrice').value);
+    const sellPrice = parseFloat(document.getElementById('sellPrice').value);
+
+    if (!stockNameInput || isNaN(buyPrice) || isNaN(sellPrice)) {
+      alert('الرجاء إدخال جميع البيانات المطلوبة بشكل صحيح');
+      return;
+    }
+
+    const stockCode = stockNameInput.match(/\((\d+)\)/)?.[1];
+    const stock = stocksData.find(s => s.code === stockCode);
+
+    if (!stock) {
+      alert('الرجاء اختيار سهم من القائمة المنسدلة');
+      return;
+    }
+
+    const profit = sellPrice - buyPrice;
+
+    if (profit <= 0) {
+      alert('لا يوجد ربح، لذلك لا يجب التطهير');
+      return;
+    }
+
+    const purificationAmount = profit * stock.purificationRate;
+    const netProfit = profit - purificationAmount;
+    const profitPercentage = (netProfit / buyPrice) * 100;
+
+    document.getElementById('purificationAmount').textContent = `${purificationAmount.toFixed(2)} ريال سعودي`;
+    document.getElementById('profitAmount').textContent = `${netProfit.toFixed(2)} ريال سعودي`;
+    document.getElementById('profitPercentage').textContent = `${profitPercentage.toFixed(2)}%`;
+
+    navigateTo('result');
+  }
+
+  // إعادة تعيين الحاسبة
+  function resetCalculator() {
+    document.getElementById('stockName').value = '';
+    document.getElementById('buyPrice').value = '';
+    document.getElementById('sellPrice').value = '';
+  }
+
+  // حفظ النتائج كـ PDF (تحت التطوير)
+  function saveAsPDF() {
+    alert('سيتم تصدير النتائج كملف PDF... هذه الخاصية قيد التطوير حالياً.');
+  }
+
+  // تأثير كتابة العنوان
+  function startTypingEffect() {
+    const titleElement = document.getElementById('typing-title');
+    if (titleElement) {
+      titleElement.classList.add('typing-effect');
+    }
+  }
+
+  // تنفيذ عند تحميل الصفحة
+  document.addEventListener('DOMContentLoaded', function() {
+    startTypingEffect();
+
+    // تحميل بيانات الأسهم إذا كانت صفحة النسب مفعلة مباشرة
+    if (document.getElementById('rates').classList.contains('active')) {
+      loadStocksData();
+    }
+
+    // زر حساب التطهير
+    document.getElementById('calculateBtn')?.addEventListener('click', calculatePurification);
+  });
+</script>
+
+</body>
+</html>
